@@ -7,6 +7,8 @@ $padding: 1.5rem;
 $gap: 1rem;
 $gap-1: 7rem;
 $gap-2: 10vh;
+$gap-3: 2vh;
+$gap-4: 0.5rem;
 $border-radius: 1.25rem;
 $width: 85%;
 %fixed-position {
@@ -76,7 +78,7 @@ $width: 85%;
   max-height: 3rem;
   aspect-ratio: 1;
   position: relative;
-  z-index: 100;
+  z-index: 1000;
   background: linear-gradient(to bottom, $yellow-3 2%, $yellow-2);
   color: $white-1;
   font-size: 1.25rem;
@@ -135,6 +137,12 @@ $width: 85%;
     top: calc(100vh - (2 * $padding));
     transform: translateY(-100%);
     transition: 0.5s;
+    visibility: hidden;
+    .fa-solid {
+      &.hide {
+        display: none;
+      }
+    }
   }
 }
 .game {
@@ -143,13 +151,15 @@ $width: 85%;
   padding: $padding;
   position: relative;
   overflow-y: auto;
-  visibility: hidden;
-  background-image: url("../media/images/background.svg");
   background-size: cover;
   background-position: 50% 100%;
-  &.hide {
-    animation-name: scaleDown;
-    animation-duration: 0.5s;
+  visibility: hidden;
+  transform-origin: right top;
+
+  &.hideGame {
+    animation-name: hideGame;
+    animation-timing-function: linear;
+    animation-duration: 0.7s;
     animation-iteration-count: 1;
   }
   .head {
@@ -362,10 +372,16 @@ $width: 85%;
       }
       .cards {
         max-height: calc((100% - $gap-2) * 0.8);
-        gap: $gap;
+        gap: $gap-3;
         @include mediaQuery($medScreen_min_width) {
           & {
             max-height: calc((100% - $gap-1) * 0.8);
+            gap: $gap-4;
+          }
+        }
+        @include mediaQuery($largeScreen_min_width) {
+          & {
+            gap: $gap;
           }
         }
         .card-item {
@@ -432,10 +448,16 @@ $width: 85%;
       }
       .match-cards {
         max-height: calc((100% - $gap-2) * 0.2);
-        gap: $gap;
+        gap: $gap-3;
         @include mediaQuery($medScreen_min_width) {
           & {
             max-height: calc((100% - $gap-1) * 0.2);
+            gap: $gap-4;
+          }
+        }
+        @include mediaQuery($largeScreen_min_width) {
+          & {
+            gap: $gap;
           }
         }
         .match-card-wrapper {
@@ -510,7 +532,7 @@ $width: 85%;
     }
   }
   .message {
-    font-family:DG-3asomy-Regular;
+    font-family: DG-3asomy-Regular;
     text-transform: uppercase;
     font-size: 3rem;
   }
@@ -602,6 +624,9 @@ $width: 85%;
         margin: 0 auto;
         position: relative;
         top: -3vh;
+        img {
+          transform: scaleX(-1);
+        }
       }
       .content-card {
         height: 60%;
@@ -695,7 +720,15 @@ $width: 85%;
     transform: translateZ(-1px) scaleX(1);
   }
 }
+@keyframes hideGame {
+  0% {
+    transform: scale(1);
+  }
 
+  100% {
+    transform: scale(0);
+  }
+}
 @keyframes scaleDown {
   0% {
     top: 50%;
